@@ -9,4 +9,7 @@ public interface EmailService {
 
     public  void sendHtmlEmail(String to,String subject,String message) throws MessagingException;
 
+    public boolean sendOtp(String email);
+    public  boolean verifyOtp(String otp);
+
 }

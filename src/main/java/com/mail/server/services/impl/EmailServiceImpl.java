@@ -4,21 +4,25 @@ import com.mail.server.services.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.server.Cookie;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.util.Random;
+
 @Service
 public class EmailServiceImpl implements EmailService {
     @Autowired
     JavaMailSender mailSender;
-    final static String FROM="divyassawant01@gmail.com";
+    final Cookie c = new Cookie();
+    final static String FROM = "divyassawant01@gmail.com";
 
     @Override
     public void sendEmail(String to, String subject, String message) {
-        SimpleMailMessage sm=new SimpleMailMessage();
+        SimpleMailMessage sm = new SimpleMailMessage();
         sm.setTo(to);
         sm.setSubject(subject);
         sm.setText(message);
@@ -29,10 +33,10 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void bulkEmails(String[] to, String subject, String message) {
-        SimpleMailMessage sm=new SimpleMailMessage();
+        SimpleMailMessage sm = new SimpleMailMessage();
         sm.setTo(to);
         sm.setSubject(subject);
-        sm.setFrom(FROM);
+
         sm.setText(message);
         sm.setFrom(FROM);
         mailSender.send(sm);
@@ -41,7 +45,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendHtmlEmail(String to, String subject, String message) throws MessagingException {
-        String template= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html dir=\"ltr\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" lang=\"en\"><head><meta charset=\"UTF-8\"><meta content=\"width=device-width, initial-scale=1\" name=\"viewport\"><meta name=\"x-apple-disable-message-reformatting\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><meta content=\"telephone=no\" name=\"format-detection\"><title>New Template</title> <!--[if (mso 16)]><style type=\"text/css\">     a {text-decoration: none;}     </style><![endif]--> <!--[if gte mso 9]><style>sup { font-size: 100% !important; }</style><![endif]--> <!--[if gte mso 9]><xml> <o:OfficeDocumentSettings> <o:AllowPNG></o:AllowPNG> <o:PixelsPerInch>96</o:PixelsPerInch> </o:OfficeDocumentSettings> </xml>\n" +
+        String template = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html dir=\"ltr\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" lang=\"en\"><head><meta charset=\"UTF-8\"><meta content=\"width=device-width, initial-scale=1\" name=\"viewport\"><meta name=\"x-apple-disable-message-reformatting\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><meta content=\"telephone=no\" name=\"format-detection\"><title>New Template</title> <!--[if (mso 16)]><style type=\"text/css\">     a {text-decoration: none;}     </style><![endif]--> <!--[if gte mso 9]><style>sup { font-size: 100% !important; }</style><![endif]--> <!--[if gte mso 9]><xml> <o:OfficeDocumentSettings> <o:AllowPNG></o:AllowPNG> <o:PixelsPerInch>96</o:PixelsPerInch> </o:OfficeDocumentSettings> </xml>\n" +
                 "<![endif]--> <!--[if mso]><style type=\"text/css\">      ul {   margin: 0 !important;   }   ol {   margin: 0 !important;   }   li {   margin-left: 47px !important;   }  </style>\n" +
                 "<![endif] --><style type=\"text/css\">.rollover:hover .rollover-first { max-height:0px!important; display:none!important; } .rollover:hover .rollover-second { max-height:none!important; display:block!important; } .rollover span { font-size:0px; } u + .body img ~ div div { display:none; } #outlook a { padding:0; } span.MsoHyperlink,span.MsoHyperlinkFollowed { color:inherit; mso-style-priority:99; } a.es-button { mso-style-priority:100!important; text-decoration:none!important; } a[x-apple-data-detectors] { color:inherit!important; text-decoration:none!important; font-size:inherit!important; font-family:inherit!important; font-weight:inherit!important; line-height:inherit!important; } .es-desk-hidden { display:none; float:left; overflow:hidden; width:0; max-height:0; line-height:0; mso-hide:all; } .es-button-border:hover > a.es-button { color:#ffffff!important; }\n" +
                 "@media only screen and (max-width:600px) {.es-m-p0r { padding-right:0px!important } *[class=\"gmail-fix\"] { display:none!important } p, a { line-height:150%!important } h1, h1 a { line-height:120%!important } h2, h2 a { line-height:120%!important } h3, h3 a { line-height:120%!important } h4, h4 a { line-height:120%!important } h5, h5 a { line-height:120%!important } h6, h6 a { line-height:120%!important } h1 { font-size:36px!important; text-align:left } h2 { font-size:26px!important; text-align:left } h3 { font-size:20px!important; text-align:left } h4 { font-size:24px!important; text-align:left } h5 { font-size:20px!important; text-align:left } h6 { font-size:16px!important; text-align:left } .es-header-body h1 a, .es-content-body h1 a, .es-footer-body h1 a { font-size:36px!important } .es-header-body h2 a, .es-content-body h2 a, .es-footer-body h2 a { font-size:26px!important }\n" +
@@ -58,21 +62,50 @@ public class EmailServiceImpl implements EmailService {
                 "<td style=\"padding:0;Margin:0;padding-right:20px;padding-left:20px;padding-top:20px;background-image:url(https://ehfzmej.stripocdn.email/content/guids/CABINET_dffae7f979b41546fc080436b1b370e5/images/61791626685093335.png);background-repeat:no-repeat;background-position:center 80px\" background=\"https://ehfzmej.stripocdn.email/content/guids/CABINET_dffae7f979b41546fc080436b1b370e5/images/61791626685093335.png\" align=\"left\"><table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" role=\"none\" style=\"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px\"><tr><td valign=\"top\" align=\"center\" style=\"padding:0;Margin:0;width:560px\"><table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" role=\"presentation\" style=\"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px\"><tr>\n" +
                 "<td class=\"es-m-txt-l\" align=\"left\" style=\"padding:0;Margin:0;padding-bottom:10px;padding-top:5px\"><h3 style=\"Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:20px;font-style:normal;font-weight:bold;line-height:24px;color:#5c68e2\">Dear *|Veena|*,</h3> </td></tr><tr><td align=\"left\" style=\"padding:0;Margin:0;padding-bottom:10px;padding-top:5px\"><p style=\"Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px\">It was nice meeting you.</p><p style=\"Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px\">This email is a short follow-up to the conversation that took place online yesterday.<br><br><strong>Things we agreed on:</strong></p>\n" +
                 "<ul style=\"font-family:arial, 'helvetica neue', helvetica, sans-serif;padding:0px 0px 0px 40px;margin:15px 0px\"> <li style=\"color:#333333;margin:0px 0px 15px;font-size:14px\">Both sides are to finish&nbsp;preparation for collaboration. Due date: October 1, 2021.</li> <li style=\"color:#333333;margin:0px 0px 15px;font-size:14px\">Both sides agreed on the payment conditions -- we will send them in a new&nbsp;email.</li> <li style=\"color:#333333;margin:0px 0px 15px;font-size:14px\">Invoices will be sent 5 businesses days before the billing period ends.</li> <li style=\"color:#333333;margin:0px 0px 15px;font-size:14px\">Online meetings will take place every second Friday of the month starting from June.</li> </ul>\n" +
-                "<p style=\"Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px\">All these questions and conditions are a subject for further discussion.<br><br>Dear "+ message+ ", I hope our collaboration will be fruitful for both sides.<br><br>Sincerely,<br>Aaron Parker.<br><br></p></td></tr> <tr><td class=\"es-m-txt-l\" style=\"padding:0;Margin:0;padding-bottom:20px;font-size:0px\" align=\"left\"><img src=\"https://ehfzmej.stripocdn.email/content/guids/CABINET_dffae7f979b41546fc080436b1b370e5/images/89501626684388018.png\" alt=\"\" style=\"display:block;font-size:14px;border:0;outline:none;text-decoration:none\" width=\"260\" height=\"95\"></td></tr></table></td></tr></table></td></tr></table></td></tr></table>\n" +
+                "<p style=\"Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px\">All these questions and conditions are a subject for further discussion.<br><br>Dear " + message + ", I hope our collaboration will be fruitful for both sides.<br><br>Sincerely,<br>Aaron Parker.<br><br></p></td></tr> <tr><td class=\"es-m-txt-l\" style=\"padding:0;Margin:0;padding-bottom:20px;font-size:0px\" align=\"left\"><img src=\"https://ehfzmej.stripocdn.email/content/guids/CABINET_dffae7f979b41546fc080436b1b370e5/images/89501626684388018.png\" alt=\"\" style=\"display:block;font-size:14px;border:0;outline:none;text-decoration:none\" width=\"260\" height=\"95\"></td></tr></table></td></tr></table></td></tr></table></td></tr></table>\n" +
                 " <table class=\"es-content\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\" role=\"none\" style=\"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:100%;table-layout:fixed !important\"><tr><td align=\"center\" style=\"padding:0;Margin:0\"><table class=\"es-content-body\" cellspacing=\"0\" cellpadding=\"0\" bgcolor=\"#ffffff\" align=\"center\" role=\"none\" style=\"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#FFFFFF;width:600px\"><tr><td align=\"left\" style=\"padding:20px;Margin:0\"> <!--[if mso]><table style=\"width:560px\" cellpadding=\"0\" cellspacing=\"0\"><tr><td style=\"width:115px\" valign=\"top\"><![endif]--><table class=\"es-left\" cellspacing=\"0\" cellpadding=\"0\" align=\"left\" role=\"none\" style=\"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left\"><tr>\n" +
                 "<td align=\"left\" style=\"padding:0;Margin:0;width:115px\"><table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" role=\"presentation\" style=\"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px\"><tr><td class=\"es-m-txt-c\" style=\"padding:0;Margin:0;padding-top:5px;padding-bottom:5px;font-size:0px\" align=\"right\"><img src=\"https://ehfzmej.stripocdn.email/content/guids/CABINET_dffae7f979b41546fc080436b1b370e5/images/12581621865359778.png\" alt=\"\" style=\"display:block;font-size:14px;border:0;outline:none;text-decoration:none\" width=\"115\" height=\"115\"></td> </tr></table></td></tr></table> <!--[if mso]></td><td style=\"width:20px\"></td><td style=\"width:425px\" valign=\"top\"><![endif]--><table class=\"es-right\" cellspacing=\"0\" cellpadding=\"0\" align=\"right\" role=\"none\" style=\"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:right\"><tr>\n" +
                 "<td align=\"left\" style=\"padding:0;Margin:0;width:425px\"><table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" role=\"presentation\" style=\"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px\"><tr><td class=\"es-m-txt-c\" align=\"left\" style=\"padding:0;Margin:0\"><h3 style=\"Margin:0;font-family:arial, 'helvetica neue', helvetica, sans-serif;mso-line-height-rule:exactly;letter-spacing:0;font-size:20px;font-style:normal;font-weight:bold;line-height:30px;color:#5c68e2\">Aaron Parker</h3> <p style=\"Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px\">CEO of \"Style Casual\"</p>\n" +
                 "<p style=\"Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px\"><a target=\"_blank\" style=\"mso-line-height-rule:exactly;text-decoration:none;color:#333333;font-size:14px;line-height:21px\" href=\"\">+0 (000) 123 456 789</a></p><p style=\"Margin:0;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;letter-spacing:0;color:#333333;font-size:14px\"><a target=\"_blank\" href=\"mailto:aaronparker@email.com\" style=\"mso-line-height-rule:exactly;text-decoration:underline;color:#333333;font-size:14px;line-height:21px\">parker@email.com</a></p></td></tr> <tr>\n" +
                 "<td class=\"es-m-txt-c\" style=\"padding:0;Margin:0;padding-top:5px;padding-bottom:5px;font-size:0\" align=\"left\"><table class=\"es-table-not-adapt es-social\" cellspacing=\"0\" cellpadding=\"0\" role=\"presentation\" style=\"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px\"><tr><td valign=\"top\" align=\"center\" style=\"padding:0;Margin:0;padding-right:10px\"><img title=\"Facebook\" src=\"https://ehfzmej.stripocdn.email/content/assets/img/social-icons/logo-black/facebook-logo-black.png\" alt=\"Fb\" width=\"24\" height=\"24\" style=\"display:block;font-size:14px;border:0;outline:none;text-decoration:none\"></td> <td valign=\"top\" align=\"center\" style=\"padding:0;Margin:0;padding-right:10px\"><img title=\"X.com\" src=\"https://ehfzmej.stripocdn.email/content/assets/img/social-icons/logo-black/x-logo-black.png\" alt=\"X\" width=\"24\" height=\"24\" style=\"display:block;font-size:14px;border:0;outline:none;text-decoration:none\"></td>\n" +
                 "<td valign=\"top\" align=\"center\" style=\"padding:0;Margin:0;padding-right:10px\"><img title=\"Instagram\" src=\"https://ehfzmej.stripocdn.email/content/assets/img/social-icons/logo-black/instagram-logo-black.png\" alt=\"Inst\" width=\"24\" height=\"24\" style=\"display:block;font-size:14px;border:0;outline:none;text-decoration:none\"></td><td valign=\"top\" align=\"center\" style=\"padding:0;Margin:0\"><img title=\"Youtube\" src=\"https://ehfzmej.stripocdn.email/content/assets/img/social-icons/logo-black/youtube-logo-black.png\" alt=\"Yt\" width=\"24\" height=\"24\" style=\"display:block;font-size:14px;border:0;outline:none;text-decoration:none\"></td></tr> </table></td></tr></table></td></tr></table> <!--[if mso]></td></tr></table><![endif]--></td></tr></table></td></tr></table></td></tr></table></div></body></html>";
-        MimeMessage mm= mailSender.createMimeMessage();
-        MimeMessageHelper helper=new MimeMessageHelper(mm);
+        MimeMessage mm = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mm);
         helper.setTo(to);
         helper.setSubject(subject);
-        helper.setText(template,true);
+        helper.setText(template, true);
+        helper.setFrom(FROM);
         mailSender.send(mm);
 
 
+    }
 
+    @Override
+    public boolean sendOtp(String email) {
+
+        Random r = new Random();
+        int otp = r.nextInt(9999) + 1000;
+        SimpleMailMessage sm = new SimpleMailMessage();
+        String msg = "" + otp;
+        c.setName(msg);
+        sm.setTo(email);
+        sm.setSubject("otp verification");
+        sm.setText("opt-" + msg);
+        sm.setFrom(FROM);
+        mailSender.send(sm);
+        return true;
+
+    }
+
+    @Override
+    public boolean verifyOtp(String otp) {
+        String s = c.getName();
+        System.out.println(s);
+        System.out.println(otp);
+        if(otp.equals(s)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
